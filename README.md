@@ -12,3 +12,4 @@ It is a Flappy Bird clone. 👍
 Longsword Drop 1 by Sophia_C -- https://freesound.org/s/525160/ -- License: Attribution 4.0
 BirdFlap1.wav by AgentDD -- https://freesound.org/s/246225/ -- License: Attribution 3.0
 Score 1 by CJspellsfish -- https://freesound.org/s/676401/ -- License: Creative Commons 0
+Flappy Bird assets by russs123 -- https://github.com/russs123/flappy_bird_tut
