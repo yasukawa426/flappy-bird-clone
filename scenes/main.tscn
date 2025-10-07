@@ -1,0 +1,154 @@
+[gd_scene load_steps=11 format=3 uid="uid://dr3r60dgqgek"]
+
+[ext_resource type="Script" uid="uid://gshv362oxvnx" path="res://scenes/main.gd" id="1_sugp2"]
+[ext_resource type="PackedScene" uid="uid://bmxfcjxi6ijkr" path="res://scenes/player.tscn" id="2_0wfyh"]
+[ext_resource type="PackedScene" uid="uid://3ptpjwoe11un" path="res://scenes/background.tscn" id="2_jyhfs"]
+[ext_resource type="PackedScene" uid="uid://cqwj5r7y2i2x0" path="res://scenes/ground.tscn" id="4_jyhfs"]
+[ext_resource type="PackedScene" uid="uid://dm5gmh12hr785" path="res://scenes/pipes.tscn" id="5_tbgi4"]
+[ext_resource type="Texture2D" uid="uid://cojp7g5i055ik" path="res://assets/image/restart.png" id="6_tefeu"]
+[ext_resource type="AudioStream" uid="uid://b3bk7oi650whl" path="res://assets/audio/flap_bird.wav" id="8_85g3d"]
+[ext_resource type="AudioStream" uid="uid://c21skmjgvioy4" path="res://assets/audio/longsword_drop_long.wav" id="8_tipki"]
+[ext_resource type="AudioStream" uid="uid://dreutdo6blfba" path="res://assets/audio/score_1.mp3" id="9_85g3d"]
+
+[sub_resource type="Theme" id="Theme_tbgi4"]
+default_font_size = 50
+
+[node name="Main" type="Node" node_paths=PackedStringArray("pipes")]
+script = ExtResource("1_sugp2")
+pipes = [NodePath("Pipes"), NodePath("Pipes2"), NodePath("Pipes3"), NodePath("Pipes4")]
+
+[node name="Background" parent="." instance=ExtResource("2_jyhfs")]
+metadata/_edit_lock_ = true
+
+[node name="Player" parent="." instance=ExtResource("2_0wfyh")]
+GRAVITY = 1700
+metadata/_edit_lock_ = true
+
+[node name="Ground" parent="." instance=ExtResource("4_jyhfs")]
+position = Vector2(0, 768)
+metadata/_edit_lock_ = true
+
+[node name="Pipes2" parent="." instance=ExtResource("5_tbgi4")]
+position = Vector2(1326, 380)
+
+[node name="Pipes" parent="." instance=ExtResource("5_tbgi4")]
+position = Vector2(1026, 380)
+
+[node name="Pipes3" parent="." instance=ExtResource("5_tbgi4")]
+position = Vector2(1626, 380)
+
+[node name="Pipes4" parent="." instance=ExtResource("5_tbgi4")]
+position = Vector2(1926, 380)
+
+[node name="PipeSpawnLocation" type="Marker2D" parent="."]
+position = Vector2(1626, 380)
+metadata/_edit_lock_ = true
+
+[node name="ScoreLabel" type="Label" parent="."]
+z_index = 5
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 23.0
+grow_horizontal = 2
+theme = SubResource("Theme_tbgi4")
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 50
+text = "0"
+
+[node name="OverUi" type="Control" parent="."]
+z_index = 6
+custom_minimum_size = Vector2(150, 200)
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -85.0
+offset_top = -125.0
+offset_right = 85.0
+offset_bottom = 125.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="ColorRect" type="ColorRect" parent="OverUi"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.835867, 0.546963, 0.283977, 1)
+metadata/_edit_lock_ = true
+
+[node name="CurrentScoreLabel" type="Label" parent="OverUi"]
+z_index = 1
+layout_mode = 0
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 169.0
+offset_bottom = 74.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 25
+text = "Score: 0
+"
+horizontal_alignment = 1
+
+[node name="Button" type="Button" parent="OverUi"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -46.5
+offset_top = -50.0
+offset_right = 46.5
+offset_bottom = -19.0
+grow_horizontal = 2
+grow_vertical = 0
+icon = ExtResource("6_tefeu")
+
+[node name="HighScoreLabel" type="Label" parent="OverUi"]
+z_index = 1
+layout_mode = 0
+offset_left = 1.0
+offset_top = 34.0
+offset_right = 169.0
+offset_bottom = 107.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 25
+text = "HighScore: 0"
+horizontal_alignment = 1
+
+[node name="audio" type="Node" parent="."]
+
+[node name="game_over" type="AudioStreamPlayer" parent="audio"]
+stream = ExtResource("8_tipki")
+volume_db = -1.015
+pitch_scale = 0.69
+
+[node name="flap" type="AudioStreamPlayer" parent="audio"]
+stream = ExtResource("8_85g3d")
+
+[node name="score" type="AudioStreamPlayer" parent="audio"]
+stream = ExtResource("9_85g3d")
+
+[connection signal="hit" from="Ground" to="." method="_on_hit"]
+[connection signal="hit" from="Pipes2" to="." method="_on_hit"]
+[connection signal="scored" from="Pipes2" to="." method="_on_scored"]
+[connection signal="hit" from="Pipes" to="." method="_on_hit"]
+[connection signal="scored" from="Pipes" to="." method="_on_scored"]
+[connection signal="hit" from="Pipes3" to="." method="_on_hit"]
+[connection signal="scored" from="Pipes3" to="." method="_on_scored"]
+[connection signal="hit" from="Pipes4" to="." method="_on_hit"]
+[connection signal="scored" from="Pipes4" to="." method="_on_scored"]
+[connection signal="pressed" from="OverUi/Button" to="." method="_on_button_pressed"]
